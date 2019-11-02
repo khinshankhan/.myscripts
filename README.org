@@ -1,2 +1,6 @@
-# .myscripts
+#+TITLE: .myscripts
+#+AUTHOR: Khinshan Khan
+#+STARTIP: overview
+
 Making life easier, one line of code at a time (the #! of shebangs)
+
