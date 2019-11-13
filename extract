@@ -57,4 +57,4 @@ Supported file types:
   done
 }
 
-extract $1
+extract $@
