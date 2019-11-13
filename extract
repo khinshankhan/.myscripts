@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+# Extract archives based on file extension.
+#
+# Supported file types: 7z, bz2, gz, rar, tar, tar.bz2, tar.gz, tbz2, tgz, Z,
+# and zip.
+#
+# Globals:   None
+# Arguments: One or more files
+# Returns:   None
+# · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+function extract() {
+  local -r usage="\
+Usage: extract file [file ...]
+Extract archives based on file extension.
+Supported file types:
+  7z
+  bz2
+  gz
+  rar
+  tar
+  tar.bz2
+  tar.gz
+  tbz2
+  tgz
+  Z
+  zip"
+
+  if [[ -z "$1" || "$1" =~ ^--?h(elp)?$ ]]; then
+    printf -- "%s\n" "${usage}" >&2
+    return
+  fi
+  while (($#)); do
+    case $1 in
+      *.tar.bz2) tar xvjf "$1"   ;;
+      *.tar.gz)  tar xvzf "$1"   ;;
+      *.bz2)     bunzip2 "$1"    ;;
+      *.rar)     unrar x "$1"    ;;
+      *.gz)      gunzip "$1"     ;;
+      *.tar)     tar xvf "$1"    ;;
+      *.tbz2)    tar xvjf "$1"   ;;
+      *.tgz)     tar xvzf "$1"   ;;
+      *.zip)     unzip "$1"      ;;
+      *.Z)       uncompress "$1" ;;
+      *.7z)      7z x "$1"       ;;
+      *)
+        printf "extract: unrecognized file type for %s\n" "$1" >&2
+        printf -- "%s\n" "${usage}" >&2
+        return 1
+    esac
+    if (($?)); then
+      printf "extract: cannot extract %s\n" "$1" >&2
+      return 1
+    fi
+    shift
+  done
+}
+
+extract $1
