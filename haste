@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+# Upload text to hastebin.com
+#
+# Notes:
+#        - hastebin.com is often down
+#        - user must have read access
+#
+# Globals:   None
+# Arguments: One or more files
+# Returns:   hastebin link if successful
+# · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+function haste() {
+    local -r usage="\
+Usage: haste file [file ...]
+Upload file(s)'s text to https://hastebin.com"
+    if [[ -z "$1" || "$1" =~ ^--?h(elp)?$ ]]; then
+        printf -- "%s\n" "${usage}" >&2
+        return
+    fi
+    while (($#)); do
+        #
+        if [ -f $1 ]; then
+            a=$(cat $1)
+            curl -X POST -s -d "$a" https://hastebin.com/documents | awk -F '"' '{print "https://hastebin.com/"$4}';
+        else
+            printf "haste: cannot upload %s\n" "$1" >&2
+        fi
+        shift
+    done
+}
+
+haste $@
