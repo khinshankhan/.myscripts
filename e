@@ -4,10 +4,15 @@
 # Invoke emacs makefile from anywhere in system
 # · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
 
-if [ "$#" == 1 ]; then
-    (cd ~/.emacs.d && make "$1" 2> /dev/null) ||  ~/.emacs.d/bin/e $@
+if [ "$#" == 0 ]; then
+    ~/.emacs.d/bin/e
+elif [ "$#" == 1 ]; then
+    # ~/.emacs.d/bin/$@
+    if test -f ~/.emacs.d/bin/$1; then
+        ~/.emacs.d/bin/$1
+    else
+        ~/.emacs.d/bin/e $1
+    fi
 else
-    # TODO: figure out how to keep current directory as 'source' for filepaths
-    args=\"${@:2}\"
-    (cd ~/.emacs.d && make "$1" ARGS="$args") # || make ARGS="$@"
+    ~/.emacs.d/bin/$1 ${@:2}
 fi
