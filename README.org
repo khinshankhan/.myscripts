@@ -2,5 +2,4 @@
 #+AUTHOR: Khinshan Khan
 #+STARTIP: overview
 
-Making life easier, one line of code at a time (the #! of shebangs)
-
+*Temporarily archived.* Scripts now live in [[https://github.com/khinshankhan/dotfiles][dotfiles]].
